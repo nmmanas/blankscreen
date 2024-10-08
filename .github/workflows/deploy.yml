@@ -1,6 +1,7 @@
 name: Deploy Blank Screen
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
