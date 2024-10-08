@@ -19,7 +19,8 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: rgba(255, 255, 255, 0.3);
+            background-color: rgba(200, 200, 200, 0.5);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -30,16 +31,18 @@
             transition: all 0.3s ease;
         }
         #colorPicker:hover {
-            background-color: rgba(255, 255, 255, 0.5);
+            background-color: rgba(180, 180, 180, 0.7);
         }
         #colorOptions {
             display: none;
             position: fixed;
             bottom: 70px;
             right: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(240, 240, 240, 0.9);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             border-radius: 5px;
             padding: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         .color-option {
             width: 30px;
@@ -48,6 +51,22 @@
             border-radius: 50%;
             cursor: pointer;
             display: inline-block;
+            position: relative;
+        }
+        .color-option::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-shadow: 0 0 2px black;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .color-option.selected::after {
+            opacity: 1;
         }
     </style>
 </head>
@@ -67,6 +86,7 @@
             option.addEventListener('click', () => {
                 document.body.style.backgroundColor = color;
                 colorOptions.style.display = 'none';
+                updateSelectedColor(color);
             });
             colorOptions.appendChild(option);
         });
@@ -80,6 +100,19 @@
                 colorOptions.style.display = 'none';
             }
         });
+
+        function updateSelectedColor(selectedColor) {
+            document.querySelectorAll('.color-option').forEach(option => {
+                if (option.style.backgroundColor === selectedColor) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        }
+
+        // Initialize with white selected
+        updateSelectedColor('rgb(255, 255, 255)');
     </script>
 </body>
 </html>
