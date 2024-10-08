@@ -76,6 +76,9 @@
         const colorPicker = document.getElementById('colorPicker');
         const colorOptions = document.getElementById('colorOptions');
 
+        // Set initial display state
+        colorOptions.style.display = 'none';
+
         colors.forEach(color => {
             const option = document.createElement('div');
             option.className = 'color-option';
@@ -88,14 +91,13 @@
             colorOptions.appendChild(option);
         });
 
-        colorPicker.addEventListener('click', () => {
+        colorPicker.addEventListener('click', (event) => {
+            event.stopPropagation();
             colorOptions.style.display = colorOptions.style.display === 'none' ? 'block' : 'none';
         });
 
-        document.addEventListener('click', (event) => {
-            if (!colorPicker.contains(event.target) && !colorOptions.contains(event.target)) {
-                colorOptions.style.display = 'none';
-            }
+        document.addEventListener('click', () => {
+            colorOptions.style.display = 'none';
         });
 
         function updateSelectedColor(selectedColor) {
