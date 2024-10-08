@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blank Screen | White</title>
-    <meta name="description" content="This page displays a pure white background, perfect for screen tests, relaxation, or visual palate cleansing.">
-    <meta name="keywords" content="blank screen, white screen, empty display, screen test">
+    <title>Blank Screen | Pick Your Color</title>
+    <meta name="description" content="This page displays a customizable blank screen, where you can choose your preferred background color. Perfect for screen tests, relaxation, or visual palate cleansing.">
+    <meta name="keywords" content="blank screen, customizable background, screen test, color picker">
     <style>
         body {
             background-color: #FFFFFF;
@@ -13,10 +13,73 @@
             padding: 0;
             height: 100vh;
             overflow: hidden;
+            transition: background-color 0.3s ease;
+        }
+        #colorPicker {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        #colorPicker:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+        #colorOptions {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .color-option {
+            width: 30px;
+            height: 30px;
+            margin: 5px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
-    <!-- This page intentionally left blank -->
+    <div id="colorPicker">🎨</div>
+    <div id="colorOptions"></div>
+
+    <script>
+        const colors = ['#FFFFFF', '#000000', '#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#00FFFF', '#FF00FF'];
+        const colorPicker = document.getElementById('colorPicker');
+        const colorOptions = document.getElementById('colorOptions');
+
+        colors.forEach(color => {
+            const option = document.createElement('div');
+            option.className = 'color-option';
+            option.style.backgroundColor = color;
+            option.addEventListener('click', () => {
+                document.body.style.backgroundColor = color;
+                colorOptions.style.display = 'none';
+            });
+            colorOptions.appendChild(option);
+        });
+
+        colorPicker.addEventListener('click', () => {
+            colorOptions.style.display = colorOptions.style.display === 'none' ? 'block' : 'none';
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!colorPicker.contains(event.target) && !colorOptions.contains(event.target)) {
+                colorOptions.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
