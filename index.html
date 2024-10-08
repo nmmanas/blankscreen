@@ -56,6 +56,19 @@
         .color-option.selected {
             border-color: var(--border-color, #333);
         }
+        
+        @media (max-width: 768px) {
+            #colorOptions {
+                display: none;
+                flex-direction: column;
+                bottom: 70px;
+                right: 20px;
+                padding: 5px;
+            }
+            .color-option {
+                margin: 3px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -84,7 +97,11 @@
 
         colorPicker.addEventListener('click', (event) => {
             event.stopPropagation();
-            colorOptions.style.display = colorOptions.style.display === 'none' ? 'block' : 'none';
+            if (colorOptions.style.display === 'none') {
+                colorOptions.style.display = window.innerWidth <= 768 ? 'flex' : 'block';
+            } else {
+                colorOptions.style.display = 'none';
+            }
         });
 
         document.addEventListener('click', () => {
@@ -117,7 +134,7 @@
 
         function rgbToHex(rgb) {
             const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-            if (!match) return rgb; // If it's already a hex value or invalid
+            if (!match) return rgb;
             function hex(x) {
                 return ("0" + parseInt(x).toString(16)).slice(-2);
             }
