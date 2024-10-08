@@ -54,7 +54,7 @@
             transition: border-color 0.3s ease;
         }
         .color-option.selected {
-            border-color: #333;
+            border-color: var(--border-color, #333);
         }
     </style>
 </head>
@@ -97,6 +97,7 @@
                 const optionRGB = hexToRgb(rgbToHex(option.style.backgroundColor));
                 if (compareColors(selectedRGB, optionRGB)) {
                     option.classList.add('selected');
+                    option.style.setProperty('--border-color', isLightColor(selectedRGB) ? '#333' : '#FFF');
                 } else {
                     option.classList.remove('selected');
                 }
@@ -125,6 +126,10 @@
 
         function compareColors(color1, color2) {
             return color1.r === color2.r && color1.g === color2.g && color1.b === color2.b;
+        }
+
+        function isLightColor(color) {
+            return (color.r * 0.299 + color.g * 0.587 + color.b * 0.114) > 186;
         }
 
         // Initialize with white selected
