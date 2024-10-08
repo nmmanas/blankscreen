@@ -88,9 +88,7 @@
             option.className = 'color-option';
             option.style.backgroundColor = color;
             option.addEventListener('click', () => {
-                document.body.style.backgroundColor = color;
-                colorOptions.style.display = 'none';
-                updateSelectedColor(color);
+                setColor(color);
             });
             colorOptions.appendChild(option);
         });
@@ -107,6 +105,14 @@
         document.addEventListener('click', () => {
             colorOptions.style.display = 'none';
         });
+
+        function setColor(color) {
+            document.body.style.backgroundColor = color;
+            colorOptions.style.display = 'none';
+            updateSelectedColor(color);
+            // Save the color choice to localStorage
+            localStorage.setItem('selectedColor', color);
+        }
 
         function updateSelectedColor(selectedColor) {
             const selectedRGB = hexToRgb(selectedColor);
@@ -149,8 +155,18 @@
             return (color.r * 0.299 + color.g * 0.587 + color.b * 0.114) > 186;
         }
 
-        // Initialize with white selected
-        updateSelectedColor('#FFFFFF');
+        // Load the saved color or use default white
+        function loadSavedColor() {
+            const savedColor = localStorage.getItem('selectedColor');
+            if (savedColor) {
+                setColor(savedColor);
+            } else {
+                setColor('#FFFFFF');
+            }
+        }
+
+        // Call this function when the page loads
+        loadSavedColor();
     </script>
 </body>
 </html>
