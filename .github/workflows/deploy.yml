@@ -1,0 +1,30 @@
+name: Deploy Blank Screen
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH into VPS and Deploy Project
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/blankscreen || git clone https://github.com/nmmanas/blankscreen.git /var/www/blankscreen
+            cd /var/www/blankscreen
+
+            # Reset any local changes to the configuration files
+            git reset --hard HEAD
+
+            # Pull the latest changes from the repository
+            git pull origin main
