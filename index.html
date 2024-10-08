@@ -101,8 +101,10 @@
         });
 
         function updateSelectedColor(selectedColor) {
+            const selectedRGB = hexToRgb(selectedColor);
             document.querySelectorAll('.color-option').forEach(option => {
-                if (option.style.backgroundColor === selectedColor) {
+                const optionRGB = hexToRgb(rgbToHex(option.style.backgroundColor));
+                if (compareColors(selectedRGB, optionRGB)) {
                     option.classList.add('selected');
                 } else {
                     option.classList.remove('selected');
@@ -110,8 +112,32 @@
             });
         }
 
+        function hexToRgb(hex) {
+            const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+            hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : null;
+        }
+
+        function rgbToHex(rgb) {
+            const match = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+            if (!match) return rgb; // If it's already a hex value or invalid
+            function hex(x) {
+                return ("0" + parseInt(x).toString(16)).slice(-2);
+            }
+            return "#" + hex(match[1]) + hex(match[2]) + hex(match[3]);
+        }
+
+        function compareColors(color1, color2) {
+            return color1.r === color2.r && color1.g === color2.g && color1.b === color2.b;
+        }
+
         // Initialize with white selected
-        updateSelectedColor('rgb(255, 255, 255)');
+        updateSelectedColor('#FFFFFF');
     </script>
 </body>
 </html>
